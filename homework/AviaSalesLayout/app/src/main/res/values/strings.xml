@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">AviaSales Layout</string>
+
+    <string-array name="airports_array">
+        <item>IKT</item>
+        <item>LED</item>
+        <item>JFK</item>
+        <item>SVO</item>
+        <item>VKO</item>
+        <item>DME</item>
+        <item>BKK</item>
+        <item>UUD</item>
+    </string-array>
+
+</resources>

@@ -20,50 +20,29 @@ class GameActivity : AppCompatActivity() {
         setContentView(R.layout.activity_game)
         lowerBound = intent.getIntExtra("lowerBound", 0)
         upperBound = intent.getIntExtra("upperBound", 0)
-//        Log.d("test", "new activity")
-//        Log.d("test","lowerBound: $lowerBound")
-//        Log.d("test", "upperBound: $upperBound")
 
         var textV  = findViewById<TextView>(R.id.field)
-
+        val butLower: Button = findViewById(R.id.lower)
+        val butBigger: Button = findViewById(R.id.bigger)
 
         mean = (upperBound + lowerBound) / 2
         textV.text = mean.toString()
 
-        val butLower: Button = findViewById(R.id.lower)
-        val butBigger: Button = findViewById(R.id.bigger)
-
+        //No button
         butLower.setOnClickListener {
-
-//            Log.d("test", "Lower $lowerBound $upperBound $mean")
-
             if (mean == lowerBound) {
-//                Log.d("test", "Lower! Your number is $lowerBound")
                 returnValue(lowerBound)
             }
-
-            if (lowerBound + 1 == upperBound) {
-//                Log.d("test", "Lower! Your number is $lowerBound")
-                returnValue(lowerBound)
-            }
-
             upperBound = mean
             mean = (upperBound + lowerBound) / 2
             textV.text = mean.toString()
         }
 
+        //Yes button
         butBigger.setOnClickListener{
-//            Log.d("test", "Bigger $lowerBound $upperBound $mean")
-
-            if (mean == upperBound) {
-//                Log.d("test", "Upper! Your number is $upperBound")
+            if (mean+1 == upperBound) {
                 returnValue(upperBound)
             }
-            if (lowerBound + 1 == upperBound) {
-//                Log.d("test", "Upper! Your number is $upperBound")
-                returnValue(upperBound)
-            }
-
             lowerBound = mean
             mean = (upperBound + lowerBound) / 2
             textV.text = mean.toString()
@@ -71,14 +50,14 @@ class GameActivity : AppCompatActivity() {
     }
 
 
-    fun returnValue(res: Int) {
+    private fun returnValue(res: Int) {
         val resultIntent = Intent()
         resultIntent.putExtra("result", res)
         setResult(Activity.RESULT_OK, resultIntent)
         finish()
     }
 
-
-
-
+    private fun printDebug() {
+        Log.d("debug", "$lowerBound $mean $upperBound")
+    }
 }

@@ -1,0 +1,13 @@
+{ "movies" :
+        [ { "name" : "The 13th floor",
+            "director": "Josef Rusnak",
+            "year" : 1999,
+            "rating" : 8.1
+          },
+          { "name" : "BEE movie",
+            "director": "Simon J. Smith",
+            "year" : 2007,
+            "rating" : 6.1
+          }
+        ]
+}

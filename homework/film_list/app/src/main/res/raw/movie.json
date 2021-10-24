@@ -13,6 +13,21 @@
       "director": "Todd Phillips",
       "year" : 2019,
       "rating" : 8.4
+    },
+    { "name" : "Starship troopers",
+      "director": "Paul Verhoeven",
+      "year" : 1997,
+      "rating" : 8.1
+    },
+    { "name" : "Blade Runner",
+      "director": "Ridley Scott",
+      "year" : 1982,
+      "rating" : 7.2
+    },
+    { "name" : "Pacific Rim",
+      "director": "Guillermo del Toro",
+      "year" : 2013,
+      "rating" : 6.9
     }
   ]
 }

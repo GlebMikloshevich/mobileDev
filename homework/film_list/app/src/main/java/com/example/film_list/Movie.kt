@@ -1,5 +1,11 @@
 package com.example.film_list
 
-data class Movie (val name: String, val director: String, val year: Int, val rating: Float) {
+import com.google.gson.annotations.SerializedName
+
+data class Movie (
+    @SerializedName("name") val name: String,
+    @SerializedName("director") val director: String,
+    @SerializedName("year") val year: Int,
+    @SerializedName("rating") val rating: Float) {
 
 }

@@ -1,5 +1,7 @@
 package com.example.film_list
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -18,12 +20,17 @@ class MainActivity : AppCompatActivity() {
     private lateinit var directorView: TextView
     private lateinit var releaseYearView: TextView
     private lateinit var ratingView: TextView
+    private lateinit var gson: Gson
+    private lateinit var sharedPref: SharedPreferences
 
     private lateinit var resetButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        sharedPref = getPreferences(Context.MODE_PRIVATE)
+
+
 
         filmTitle = findViewById(R.id.title)
         directorView = findViewById(R.id.director)
@@ -31,11 +38,15 @@ class MainActivity : AppCompatActivity() {
         ratingView = findViewById(R.id.rating)
 
         val movies_stream = resources.openRawResource(R.raw.movie)
-        val gson = Gson()
+        gson = Gson()
         moviesRaw = gson.fromJson(InputStreamReader(movies_stream), Movies::class.java).movies
         movies = moviesRaw.toCollection(ArrayList())
-
         filmTitle.text = "Press next films"
+        val d = get_film_array()
+        if (! d.isNullOrEmpty()) {
+            movies = d
+            Log.d("movies", "d: $movies")
+        }
 
         resetButton = findViewById(R.id.button2)
 //        val resetButton: Button = findViewById(R.id.button2)
@@ -51,9 +62,10 @@ class MainActivity : AppCompatActivity() {
 
         } else {
             val i = Random.nextInt(0, movies.size)
-            Log.d("films", movies[i].toString())
+
             setData(movies[i])
             movies.removeAt(i)
+            save_json()
         }
     }
 
@@ -74,6 +86,24 @@ class MainActivity : AppCompatActivity() {
         directorView.text = ""
         ratingView.text = ""
         releaseYearView.text = ""
+    }
+
+    fun save_json() {
+        with (sharedPref.edit()) {
+            remove("films")
+            apply()
+            putString("films", gson.toJson(movies))
+            apply()
+        }
+    }
+
+    fun get_film_array(): ArrayList<Movie> {
+        val j = sharedPref.getString("films", "")
+        if (! j.isNullOrEmpty()) {
+            return gson.fromJson(j, Array<Movie>::class.java).toCollection(ArrayList())
+
+        }
+        return ArrayList()
     }
 
 }

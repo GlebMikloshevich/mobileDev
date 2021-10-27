@@ -1,5 +1,10 @@
 package com.example.film_list
 
-data class Movies (val movies: Array<Movie>) {
+import com.google.gson.annotations.SerializedName
+
+
+data class Movies (
+    @SerializedName("movies") val movies: Array<Movie>
+    ) {
 
 }

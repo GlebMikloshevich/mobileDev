@@ -1,9 +1,7 @@
 package com.example.neighboring_cities
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,13 +9,11 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import java.io.InputStreamReader
-import kotlin.random.Random
 import com.google.gson.Gson
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     private lateinit var gson: Gson
     private lateinit var citiesRaw : Array<City>
-    lateinit var cityTextView: TextView
     lateinit var cityDistanceEditText: EditText
     var cityName = ""
     var cityIndex = -1
@@ -27,34 +23,36 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val spinner = findViewById<Spinner>(R.id.spinner)
-        cityTextView = findViewById(R.id.button)
-        cityDistanceEditText = findViewById(R.id.distance)
-        val button: Button = findViewById(R.id.button)
 
+
+        //Views declaration
+        val spinner = findViewById<Spinner>(R.id.spinner)
+        val button: Button = findViewById(R.id.button)
+        cityDistanceEditText = findViewById(R.id.distance)
+
+
+        //working with json
         gson = Gson()
         val cities_stream = resources.openRawResource(R.raw.city1)
         citiesRaw = gson.fromJson(InputStreamReader(cities_stream), Cities::class.java).cities
-//        Log.d("city", citiesRaw.toString())
-
         var city_names: ArrayList<String> = ArrayList()
         for (city in citiesRaw) {
             city_names.add(city.name)
         }
-
 //        Log.d("city", city_names.toString())
 
-
+        //spinner
         val adapter = ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, city_names)
         spinner.adapter = adapter
         spinner.onItemSelectedListener = this
+
+
 
         button.setOnClickListener {
             val userInput = cityDistanceEditText.text.toString().trim()
             if (! userInput.isNullOrBlank()) {
                 distance = userInput.toInt()
-//                Log.d("city", "cityName: $cityName")
-                val cities = findCities(cityIndex)
+                val cities = findCities()
                 startResultActivity(cities)
             } else {
                 val text = "set up the distance!"
@@ -65,7 +63,8 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         }
     }
 
-    private fun findCities(index: Int): ArrayList<String> {
+    // searching neighboring cities
+    private fun findCities(): ArrayList<String> {
         val lat : Double = citiesRaw[cityIndex].coord.lat.toDouble()
         val lon : Double = citiesRaw[cityIndex].coord.lon.toDouble()
         val curCity : String = citiesRaw[cityIndex].name
@@ -83,12 +82,14 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         return suitableCites
     }
 
+    //new activity
     private fun startResultActivity(cities: ArrayList<String>) {
         val intent = Intent(this, ResultActivity::class.java)
         intent.putExtra("cities", cities)
         startActivity(intent)
     }
 
+    // spinner listener
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         cityName = parent?.getItemAtPosition(position).toString()
         cityIndex = position

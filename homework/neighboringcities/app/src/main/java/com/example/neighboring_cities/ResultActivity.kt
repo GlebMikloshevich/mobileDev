@@ -13,16 +13,17 @@ class ResultActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_result)
+
+        // variable declaration
         val messageTextView = findViewById<TextView>(R.id.messageTextView)
         cities = intent.getSerializableExtra("cities") as ArrayList<String>
 
-        Log.d("city", "ResultActivity")
-//        Log.d("city", "$cities")
-
+        // spinner
         val spinner = findViewById<Spinner>(R.id.spinner)
         val adapter = ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, cities)
         spinner.adapter = adapter
 
+        // Setting text to TextView
         if (cities.size == 0) {
             messageTextView.text = "There are no such cities"
         } else {
